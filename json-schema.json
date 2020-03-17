@@ -1,0 +1,119 @@
+{
+  "schema": {
+    "title": "A registration form",
+    "description": "A simple form example.",
+    "type": "object",
+    "required": ["fullname", "email", "date_of_birth"],
+    "properties": {
+      "fullname": {
+        "type": "string",
+        "title": "Full name",
+        "widget": {
+          "formlyConfig": {
+            "templateOptions": {
+              "description": "Enter your full name",
+              "placeholder": "Pieter Jan"
+            }
+          }
+        }
+      },
+      "email": {
+        "type": "string",
+        "title": "Email",
+        "widget": {
+          "formlyConfig": {
+            "templateOptions": {
+              "description": "Enter your email",
+              "placeholder": "example@gmail.com"
+            }
+          }
+        }
+      },
+      "date_of_birth": {
+        "type": "datetime",
+        "title": "Date of birth",
+        "widget": {
+          "formlyConfig": {
+            "templateOptions": {
+              "description": "Enter your birthday",
+              "placeholder": "Mar 17, 2020"
+            }
+          }
+        }
+      },
+      "country": {
+        "type": "select",
+        "title": "Country",
+        "widget": {
+          "formlyConfig": {
+            "templateOptions": {
+              "required": true,
+              "placeholder": "Netherlands",
+              "description": "Country of origin",
+              "options": [
+                { "value": 1, "label": "Netherlands" },
+                { "value": 2, "label": "Belgium" },
+                { "value": 3, "label": "Germany" },
+                { "value": 4, "label": "Other" }
+              ]
+            }
+          }
+        }
+      },
+      "have_children": {
+        "type": "checkbox",
+        "title": "Do you have children?",
+        "widget": {
+          "formlyConfig": {
+            "templateOptions": {
+              "description": "Do you have any children",
+              "placeholder": false
+            }
+          }
+        }
+      }
+    },
+    "dependencies": {
+      "have_children": {
+        "properties": {
+          "children": {
+            "title": "Children",
+            "default": [{}],
+            "type": "array",
+
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "title": "Name of Child",
+                  "widget": {
+                    "formlyConfig": {
+                      "templateOptions": {
+                        "description": "Child's name",
+                        "placeholder": "Pietje puk"
+                      }
+                    }
+                  }
+                },
+                "details": {
+                  "type": "datetime",
+                  "title": "Birthdate of Child",
+                  "description": "Child's birthday",
+                  "widget": {
+                    "formlyConfig": {
+                      "templateOptions": {
+                        "description": "Enter your birthday",
+                        "placeholder": "Mar 17, 2020"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
