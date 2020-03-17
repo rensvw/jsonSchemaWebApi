@@ -1,0 +1,121 @@
+[
+    {
+      "key": "name",
+      "type": "input",
+      "templateOptions": {
+        "label": "Full name",
+        "placeholder": "Pieter Jan",
+        "description": "Enter your full name",
+        "required": true
+      },
+      "validation": {
+        "messages": {
+          "required": "Name is required."
+        }
+      }
+    },
+    {
+      "key": "email",
+      "type": "input",
+      "templateOptions": {
+        "label": "Email",
+        "placeholder": "example@gmail.com",
+        "description": "Email address",
+        "required": true
+      },
+      "validation": {
+        "messages": {
+          "required": "Email is required."
+        }
+      }
+    },
+    {
+      "key": "date_of_birth",
+      "type": "datetime",
+      "templateOptions": {
+        "label": "Date of birth",
+        "placeholder": "Placeholder",
+        "description": "Date of birth",
+        "required": true
+      },
+      "validation": {
+        "messages": {
+          "required": "Birthdate is required."
+        }
+      }
+    },
+    {
+      "key": "country",
+      "type": "select",
+      "templateOptions": {
+        "label": "Country",
+        "placeholder": "Netherlands",
+        "description": "Country of origin",
+        "required": true,
+        "options": [
+          { "value": 1, "label": "Netherlands" },
+          { "value": 2, "label": "Belgium" },
+          { "value": 3, "label": "Germany" },
+          { "value": 4, "label": "Other" }
+        ]
+      },
+      "validation": {
+        "messages": {
+          "required": "Country is required."
+        }
+      }
+    },
+    {
+      "key": "have_children",
+      "type": "checkbox",
+      "templateOptions": {
+        "label": "Do you have children?"
+      }
+    },
+    {
+      "hideExpression": "!model.have_children",
+      "fieldGroup": [
+        {
+          "key": "children",
+          "type": "repeat",
+          "defaultValue": [{}],
+          "templateOptions": {
+            "addText": "Add another child"
+          },
+          "fieldArray": {
+            "fieldGroup": [
+              {
+                "type": "input",
+                "key": "child_name",
+                "templateOptions": {
+                  "label": "Name of Child:",
+                  "required": true
+                },
+                "validation": {
+                  "messages": {
+                    "required": "Child's name is required."
+                  }
+                }
+              },
+              {
+                "type": "datetime",
+                "key": "birthdate_of_child",
+                "templateOptions": {
+                  "label": "Birthdate of Child:",
+                  "placeholder": "Placeholder",
+                  "description": "Date of birth",
+                  "required": true
+                },
+                "validation": {
+                  "messages": {
+                    "required": "Child's birthdate is required."
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+  
