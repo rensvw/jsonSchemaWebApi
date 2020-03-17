@@ -1,5 +1,7 @@
 using System.Collections.ObjectModel;
-    public class JsonSchema
+using System.ComponentModel.DataAnnotations;
+
+public class JsonSchema
     {
         public int Id { get; set;}
 
@@ -39,7 +41,7 @@ using System.Collections.ObjectModel;
     
         public Property Country { get; set; }
     
-        public Property Have_children { get; set; }
+        public PropertyWithBool Have_children { get; set; }
     
     }
 
@@ -54,11 +56,31 @@ using System.Collections.ObjectModel;
         public Widget Widget { get; set; } 
     }
 
+    public class PropertyWithBool 
+    {
+        [Key]
+    
+        public int PropertyId { get; set;}
+        public string Type { get; set; }
+    
+        public string Title { get; set; }
+    
+        public WidgetWithBool Widget { get; set; } 
+    }
+
     public class Widget 
     {
 
         public int WidgetId { get; set;}
         public FormlyConfig FormlyConfig { get; set; }
+    }
+
+     public class WidgetWithBool 
+    {
+        [Key]
+
+        public int WidgetId { get; set;}
+        public FormlyConfigWithBool FormlyConfig { get; set; }
     }
 
     public class FormlyConfig 
@@ -67,6 +89,13 @@ using System.Collections.ObjectModel;
 
         public int FormlyConfigId { get; set;}
         public TemplateOptions TemplateOptions { get; set; }
+    }
+
+    public class FormlyConfigWithBool 
+    {
+        [Key]
+        public int FormlyConfigId { get; set;}
+        public TemplateOptionsWithBool TemplateOptions { get; set; }
     }
 
     public class TemplateOptions 
@@ -83,10 +112,25 @@ using System.Collections.ObjectModel;
         public Collection<Option> Options {get; set;}
     }
 
+    public class TemplateOptionsWithBool 
+    {
+       
+        [Key]
+   
+        public int TemplateOptionsId { get; set;}
+        public bool Required { get; set; }
+
+        public string Description { get; set; }
+    
+        public bool Placeholder { get; set; }
+
+        public Collection<Option> Options {get; set;}
+    }
+
     public partial class Option 
     {
        
-             public int OptionId { get; set;}
+        public int OptionId { get; set;}
         public int Value { get; set; }
     
         public string Label { get; set; }
