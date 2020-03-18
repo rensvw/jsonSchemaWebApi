@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace jsonWebApiProject
@@ -11,5 +12,10 @@ namespace jsonWebApiProject
         }
 
         public DbSet<FormlySchema> FormlySchema { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+            
+    }
 }
 }

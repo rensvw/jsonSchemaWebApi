@@ -1,11 +1,15 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
+using Newtonsoft.Json;
+
 
 public class JsonSchema
     {
         public int Id { get; set;}
-
+       
         public Schema Schema {get; set;}
+
     }
 
     public class Schema 

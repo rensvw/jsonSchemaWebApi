@@ -1,7 +1,8 @@
 
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
-public class Option2
+public class FormlyOption
 {
     public int Id {get; set;}
 
@@ -9,7 +10,7 @@ public class Option2
     public string Label { get; set; }
 }
 
-public class TemplateOptions2
+public class TemplateOptionsFormlyModel1
 {
     public int Id {get; set;}
 
@@ -17,7 +18,7 @@ public class TemplateOptions2
     public string Placeholder { get; set; }
     public string Description { get; set; }
     public bool Required { get; set; }
-    public Collection<Option2> Options { get; set; }
+    public Collection<FormlyOption> Options { get; set; }
 }
 
 public class Messages
@@ -27,7 +28,7 @@ public class Messages
     public string Required { get; set; }
 }
 
-public class ValIdation
+public class Validation
 {
     public int Id {get; set;}
 
@@ -64,7 +65,7 @@ public class Messages2
     public string Required { get; set; }
 }
 
-public class ValIdation2
+public class Validation2
 {
     public int Id {get; set;}
 
@@ -77,8 +78,8 @@ public class FieldGroup2
 
     public string Type { get; set; }
     public string Key { get; set; }
-    public TemplateOptions2 TemplateOptions { get; set; }
-    public ValIdation2 Validation { get; set; }
+    public TemplateOptionsFormlyModel1 TemplateOptions { get; set; }
+    public Validation2 Validation { get; set; }
 }
 
 public class FieldArray
@@ -90,12 +91,11 @@ public class FieldArray
 
 public class FieldGroup
 {
-    public int Id {get; set;}
-
+    public int Id { get; set;}
     public string Key { get; set; }
     public string Type { get; set; }
     public Collection<DefaultValue> DefaultValue { get; set; }
-    public TemplateOptions2 TemplateOptions { get; set; }
+    public TemplateOptionsFormlyModel1 TemplateOptions { get; set; }
     public FieldArray FieldArray { get; set; }
 }
  
@@ -104,10 +104,11 @@ public class ChildFormlySchema
     public int Id {get; set;}
     public string Key { get; set; }
     public string Type { get; set; }
-    public TemplateOptions2 TemplateOptions { get; set; }
-    public ValIdation ValIdation { get; set; }
+    public TemplateOptionsFormlyModel1 TemplateOptions { get; set; }
+    public Validation Validation { get; set; }
     public string HideExpression { get; set; }
     public Collection<FieldGroup> FieldGroup { get; set; }
+
 }
 
 public class FormlySchema

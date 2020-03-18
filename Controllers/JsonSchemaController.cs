@@ -24,6 +24,28 @@ namespace jsonWebApiProject.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<JsonSchema>>> GetJsonSchema()
         {
+           /*  var includableQueryable = await _context.JsonSchema
+            .Include(i => i.Schema).Select(i => new Schema { 
+                Dependencies = i.Schema.Dependencies, 
+                Description = i.Schema.Description,
+                Properties = i.Schema.Properties,
+                Required = i.Schema.Required,
+                Title = i.Schema.Title,
+                Type = i.Schema.Type  })
+            .Include(j => j.Properties).Select(j => new Properties {
+                Country = j.Properties.Country,
+                Date_of_birth = j.Properties.Date_of_birth,
+                Email = j.Properties.Email,
+                Fullname = j.Properties.Fullname,
+                Have_children = j.Properties.Have_children
+                })
+            .Include(k => k.Fullname).Select(k => new Property {
+                Title = k.Fullname.Title,
+                Type = k.Fullname.Title,
+                Title = k.Fullname.Title,
+                Title = k.Fullname.Title,
+            })
+            .ToArrayAsync(); */
             return await _context.JsonSchema
             .Include(j => j.Schema).ThenInclude(p => p.Properties).ThenInclude(f => f.Fullname).ThenInclude(w => w.Widget).ThenInclude(s => s.FormlyConfig).ThenInclude(t => t.TemplateOptions).ThenInclude(o => o.Options)
             .Include(j => j.Schema).ThenInclude(p => p.Properties).ThenInclude(f => f.Email).ThenInclude(w => w.Widget).ThenInclude(s => s.FormlyConfig).ThenInclude(t => t.TemplateOptions).ThenInclude(o => o.Options)
