@@ -27,6 +27,7 @@ namespace jsonWebApiProject.Controllers
         {
             List<FormlySchema> listOfFormlySchema =  await _context.FormlySchema
             .Include(j => j.Schema).ThenInclude(s => s.TemplateOptions)
+            .Include(j => j.Schema).ThenInclude(s => s.TemplateOptions).ThenInclude(g => g.Options)
             .Include(j => j.Schema).ThenInclude(s => s.Validation).ThenInclude(w => w.Messages)
             .Include(j => j.Schema).ThenInclude(s => s.FieldGroup).ThenInclude(k => k.DefaultValue)
             .Include(j => j.Schema).ThenInclude(s => s.FieldGroup).ThenInclude(k => k.TemplateOptions).ThenInclude(z => z.Options)
@@ -53,6 +54,7 @@ namespace jsonWebApiProject.Controllers
         {
             FormlySchema formlySchema = await _context.FormlySchema
                 .Include(j => j.Schema).ThenInclude(s => s.TemplateOptions)
+                .Include(j => j.Schema).ThenInclude(s => s.TemplateOptions).ThenInclude(g => g.Options)
                 .Include(j => j.Schema).ThenInclude(s => s.Validation).ThenInclude(w => w.Messages)
                 .Include(j => j.Schema).ThenInclude(s => s.FieldGroup).ThenInclude(k => k.DefaultValue)
                 .Include(j => j.Schema).ThenInclude(s => s.FieldGroup).ThenInclude(k => k.TemplateOptions).ThenInclude(z => z.Options)
