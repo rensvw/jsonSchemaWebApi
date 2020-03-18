@@ -42,6 +42,8 @@ namespace jsonWebApiProject
 
             app.UseAuthorization();
 
+            app.UseCors(builder => builder.WithOrigins("http://localhost:8100"));
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
