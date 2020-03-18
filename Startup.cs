@@ -23,6 +23,8 @@ namespace jsonWebApiProject
                opt.UseInMemoryDatabase("JsonSchemaList"));
                services.AddDbContext<FormlySchemaContext>(opt =>
                opt.UseInMemoryDatabase("FormlySchemaList"));
+                services.AddDbContext<FormlySchemaWithAnswersContext>(opt =>
+               opt.UseInMemoryDatabase("FormlySchemaWithAnswersList"));
             services.AddControllers();
         }
 

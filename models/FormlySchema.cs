@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,7 +11,7 @@ public class FormlyOption
     public string Label { get; set; }
 }
 
-public class TemplateOptionsFormlyModel1
+public class TemplateOptionsFormlyModel
 {
     public int Id {get; set;}
 
@@ -41,22 +42,6 @@ public class DefaultValue
 
 }
 
-public class TemplateOptions3
-{
-    public int Id {get; set;}
-
-    public string AddText { get; set; }
-}
-
-public class TemplateOptions4
-{
-    public int Id {get; set;}
-
-    public string Label { get; set; }
-    public bool Required { get; set; }
-    public string Placeholder { get; set; }
-    public string Description { get; set; }
-}
 
 public class Messages2
 {
@@ -65,7 +50,7 @@ public class Messages2
     public string Required { get; set; }
 }
 
-public class Validation2
+public class ValidationFormly
 {
     public int Id {get; set;}
 
@@ -78,8 +63,8 @@ public class FieldGroup2
 
     public string Type { get; set; }
     public string Key { get; set; }
-    public TemplateOptionsFormlyModel1 TemplateOptions { get; set; }
-    public Validation2 Validation { get; set; }
+    public TemplateOptionsFormlyModel TemplateOptions { get; set; }
+    public ValidationFormly Validation { get; set; }
 }
 
 public class FieldArray
@@ -95,7 +80,7 @@ public class FieldGroup
     public string Key { get; set; }
     public string Type { get; set; }
     public Collection<DefaultValue> DefaultValue { get; set; }
-    public TemplateOptionsFormlyModel1 TemplateOptions { get; set; }
+    public TemplateOptionsFormlyModel TemplateOptions { get; set; }
     public FieldArray FieldArray { get; set; }
 }
  
@@ -104,7 +89,7 @@ public class ChildFormlySchema
     public int Id {get; set;}
     public string Key { get; set; }
     public string Type { get; set; }
-    public TemplateOptionsFormlyModel1 TemplateOptions { get; set; }
+    public TemplateOptionsFormlyModel TemplateOptions { get; set; }
     public Validation Validation { get; set; }
     public string HideExpression { get; set; }
     public Collection<FieldGroup> FieldGroup { get; set; }
