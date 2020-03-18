@@ -25,7 +25,7 @@ namespace jsonWebApiProject.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FormlySchema>>> GetFormlySchema()
         {
-            return await _context.FormlySchema
+            List<FormlySchema> listOfFormlySchema =  await _context.FormlySchema
             .Include(j => j.Schema).ThenInclude(s => s.TemplateOptions)
             .Include(j => j.Schema).ThenInclude(s => s.Validation).ThenInclude(w => w.Messages)
             .Include(j => j.Schema).ThenInclude(s => s.FieldGroup).ThenInclude(k => k.DefaultValue)
@@ -33,24 +33,41 @@ namespace jsonWebApiProject.Controllers
             .Include(j => j.Schema).ThenInclude(s => s.FieldGroup).ThenInclude(k => k.FieldArray).ThenInclude(z => z.FieldGroup).ThenInclude(t => t.TemplateOptions).ThenInclude(g => g.Options)
             .Include(j => j.Schema).ThenInclude(s => s.FieldGroup).ThenInclude(k => k.FieldArray).ThenInclude(z => z.FieldGroup).ThenInclude(t => t.Validation).ThenInclude(s => s.Messages)
             .ToListAsync();
+
+            if(listOfFormlySchema.Count != 0){
+                foreach(FormlySchema x in listOfFormlySchema){
+                    foreach(ChildFormlySchema y in x.Schema){
+                        if(y.FieldGroup.Count == 0){
+                            y.FieldGroup = null;
+                        }
+                    }
+                }
+            }
+            
+            return listOfFormlySchema;
         }
 
         // GET: api/FormlySchema/5
         [HttpGet("{id}")]
         public async Task<ActionResult<FormlySchema>> GetFormlySchema(int id)
         {
-            var formlySchema = await _context.FormlySchema
-                      .Include(j => j.Schema).ThenInclude(s => s.TemplateOptions)
-            .Include(j => j.Schema).ThenInclude(s => s.Validation).ThenInclude(w => w.Messages)
-            .Include(j => j.Schema).ThenInclude(s => s.FieldGroup).ThenInclude(k => k.DefaultValue)
-            .Include(j => j.Schema).ThenInclude(s => s.FieldGroup).ThenInclude(k => k.TemplateOptions).ThenInclude(z => z.Options)
-            .Include(j => j.Schema).ThenInclude(s => s.FieldGroup).ThenInclude(k => k.FieldArray).ThenInclude(z => z.FieldGroup).ThenInclude(t => t.TemplateOptions).ThenInclude(g => g.Options)
-            .Include(j => j.Schema).ThenInclude(s => s.FieldGroup).ThenInclude(k => k.FieldArray).ThenInclude(z => z.FieldGroup).ThenInclude(t => t.Validation).ThenInclude(s => s.Messages)
-            .SingleAsync(j => j.Id == id);
-
+            FormlySchema formlySchema = await _context.FormlySchema
+                .Include(j => j.Schema).ThenInclude(s => s.TemplateOptions)
+                .Include(j => j.Schema).ThenInclude(s => s.Validation).ThenInclude(w => w.Messages)
+                .Include(j => j.Schema).ThenInclude(s => s.FieldGroup).ThenInclude(k => k.DefaultValue)
+                .Include(j => j.Schema).ThenInclude(s => s.FieldGroup).ThenInclude(k => k.TemplateOptions).ThenInclude(z => z.Options)
+                .Include(j => j.Schema).ThenInclude(s => s.FieldGroup).ThenInclude(k => k.FieldArray).ThenInclude(z => z.FieldGroup).ThenInclude(t => t.TemplateOptions).ThenInclude(g => g.Options)
+                .Include(j => j.Schema).ThenInclude(s => s.FieldGroup).ThenInclude(k => k.FieldArray).ThenInclude(z => z.FieldGroup).ThenInclude(t => t.Validation).ThenInclude(s => s.Messages)
+                .SingleAsync(j => j.Id == id);
+            
             if (formlySchema == null)
             {
                 return NotFound();
+            }
+            foreach(ChildFormlySchema x in formlySchema.Schema){
+                if(x.FieldGroup.Count == 0){
+                    x.FieldGroup = null;
+                }
             }
 
             return formlySchema;
@@ -99,11 +116,6 @@ namespace jsonWebApiProject.Controllers
             formlySchema.Schema = list;
             foreach (ChildFormlySchema item in formlySchemaArray)
             {
-                if(item.FieldGroup == null){
-                    Collection<FieldGroup> fgc = new Collection<FieldGroup>();
-                    fgc.Add(new FieldGroup());
-                    item.FieldGroup = fgc;
-                }
                 formlySchema.Schema.Add(item);
             }
             _context.FormlySchema.Add(formlySchema);

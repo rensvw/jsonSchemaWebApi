@@ -15,7 +15,6 @@ namespace jsonWebApiProject
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-            
-    }
+     }
 }
 }

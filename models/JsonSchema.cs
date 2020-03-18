@@ -82,7 +82,6 @@ public class JsonSchema
      public class WidgetWithBool 
     {
         [Key]
-
         public int WidgetId { get; set;}
         public FormlyConfigWithBool FormlyConfig { get; set; }
     }
