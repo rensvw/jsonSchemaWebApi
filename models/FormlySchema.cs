@@ -1,12 +1,9 @@
 
-using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations.Schema;
 
 public class FormlyOption
 {
     public int Id {get; set;}
-
     public int Value { get; set; }
     public string Label { get; set; }
 }
@@ -43,18 +40,11 @@ public class DefaultValue
 }
 
 
-public class Messages2
-{
-    public int Id {get; set;}
-
-    public string Required { get; set; }
-}
-
 public class ValidationFormly
 {
     public int Id {get; set;}
 
-    public Messages2 Messages { get; set; }
+    public Messages Messages { get; set; }
 }
 
 public class FieldGroup2
