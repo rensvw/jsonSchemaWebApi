@@ -28,7 +28,7 @@ namespace jsonWebApiProject.Controllers
                 .Include(j => j.fieldGroup).ThenInclude(j => j.templateOptions)
                 .Include(j => j.fieldGroup).ThenInclude(j => j.fieldGroup).ThenInclude(j => j.templateOptions)
                 .Include(j => j.fieldGroup).ThenInclude(j => j.expressionProperties)
-                .Include(j => j.fieldGroup).ThenInclude(j => j.expressionProperties).ThenInclude(j => j.model)
+                .Include(j => j.fieldGroup).ThenInclude(j => j.expressionProperties).ThenInclude(j => j.Model)
                 .ToListAsync();
         }
 
@@ -41,7 +41,7 @@ namespace jsonWebApiProject.Controllers
                 .Include(j => j.fieldGroup).ThenInclude(j => j.templateOptions)
                 .Include(j => j.fieldGroup).ThenInclude(j => j.fieldGroup).ThenInclude(j => j.templateOptions)
                 .Include(j => j.fieldGroup).ThenInclude(j => j.expressionProperties)
-                .Include(j => j.fieldGroup).ThenInclude(j => j.expressionProperties).ThenInclude(j => j.model)
+                .Include(j => j.fieldGroup).ThenInclude(j => j.expressionProperties).ThenInclude(j => j.Model)
                 .SingleOrDefaultAsync(x => x.Id == id);
 
 
