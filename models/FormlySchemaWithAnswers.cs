@@ -1,7 +1,5 @@
-
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations.Schema;
 
 public class FormlySchemaWithAnswers : FormlySchema
 {
@@ -11,7 +9,6 @@ public class FormlySchemaWithAnswers : FormlySchema
 public class FormlySchemaAnswers
 {
     public int Id {get; set;}
-
     public Collection<ChildrenOfAnswers> Children { get; set; }
     public string Name { get; set; }
     public string Email { get; set; }

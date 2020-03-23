@@ -25,6 +25,8 @@ namespace jsonWebApiProject
                opt.UseInMemoryDatabase("FormlySchemaList"));
                 services.AddDbContext<FormlySchemaWithAnswersContext>(opt =>
                opt.UseInMemoryDatabase("FormlySchemaWithAnswersList"));
+               services.AddDbContext<StepperSchemaContext>(opt =>
+               opt.UseInMemoryDatabase("StepperSchemaList"));
             services.AddControllers();
         }
 
