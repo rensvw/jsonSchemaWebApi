@@ -24,14 +24,26 @@ namespace jsonWebApiProject.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<StepperSchema>>> GetJsonSchema()
         {
-            return await _context.JsonSchema.ToListAsync();
+            return await _context.JsonSchema
+                .Include(j => j.fieldGroup).ThenInclude(j => j.templateOptions)
+                .Include(j => j.fieldGroup).ThenInclude(j => j.fieldGroup).ThenInclude(j => j.templateOptions)
+                .Include(j => j.fieldGroup).ThenInclude(j => j.expressionProperties)
+                .Include(j => j.fieldGroup).ThenInclude(j => j.expressionProperties).ThenInclude(j => j.model)
+                .ToListAsync();
         }
 
         // GET: api/StepperScema/5
         [HttpGet("{id}")]
         public async Task<ActionResult<StepperSchema>> GetStepperSchema(int id)
         {
-            var stepperSchema = await _context.JsonSchema.FindAsync(id);
+            
+            StepperSchema stepperSchema = await _context.JsonSchema
+                .Include(j => j.fieldGroup).ThenInclude(j => j.templateOptions)
+                .Include(j => j.fieldGroup).ThenInclude(j => j.fieldGroup).ThenInclude(j => j.templateOptions)
+                .Include(j => j.fieldGroup).ThenInclude(j => j.expressionProperties)
+                .Include(j => j.fieldGroup).ThenInclude(j => j.expressionProperties).ThenInclude(j => j.model)
+                .SingleOrDefaultAsync(x => x.Id == id);
+
 
             if (stepperSchema == null)
             {
