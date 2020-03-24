@@ -1,22 +1,47 @@
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 public class StepperSchema
 {
     public int Id { get; set;}
     public string type { get; set; }
-    public List<FieldGroupStepper> fieldGroup { get; set; }
+    public List<QuestionGroup> fieldGroup { get; set; }
+
+    public static implicit operator StepperSchema(List<StepperSchema> v)
+    {
+        throw new NotImplementedException();
+    }
 }
 
-public class FieldGroupStepper
+public class StepperSchemaFrontendMatch
 {
     public int Id { get; set;}
-    public TemplateOptionsStepper templateOptions { get; set; }
-    public List<FieldGroupStepper2> fieldGroup { get; set; }
-    public string hideExpression { get; set; }
-    public ExpressionProperties expressionProperties { get; set; }
+    public string type { get; set; }
+    public List<QuestionGroupFrontendMatch> fieldGroup { get; set; }
 }
 
-public class TemplateOptionsStepper
+public class QuestionGroup
+{
+    public int Id { get; set;}
+    public QuestionGroupTemplate templateOptions { get; set; }
+    public List<Question> fieldGroup { get; set; }
+    public string hideExpression { get; set; }
+    public List<ExpressionModel> expressionProperties { get; set; }
+}
+
+public class QuestionGroupFrontendMatch
+{
+    public int Id { get; set;}
+    public QuestionGroupTemplate templateOptions { get; set; }
+    public List<Question> fieldGroup { get; set; }
+    public string hideExpression { get; set; }
+    public Dictionary<string,string> expressionProperties { get; set; }
+}
+
+
+public class QuestionGroupTemplate
 {
     public int Id { get; set;}
     public string label { get; set; }
@@ -29,7 +54,7 @@ public class OptionStepper
     public string label { get; set; }
 }
 
-public class TemplateOptionsStepper2
+public class QuestionTemplate
 {
     public int Id { get; set;}
     public string type { get; set; }
@@ -42,20 +67,16 @@ public class TemplateOptionsStepper2
     public string selectAllOption { get; set; }
 }
 
-public class FieldGroupStepper2
+public class Question
 {
     public int Id { get; set;}
     public string key { get; set; }
     public string type { get; set; }
-    public TemplateOptionsStepper2 templateOptions { get; set; }
+    public QuestionTemplate templateOptions { get; set; }
 }
 
-public class ExpressionProperties
-{
-    public int Id {get; set;}
-    public List<Model> Model { get; set; }
-}
-public class Model {
+
+public class ExpressionModel {
     public int Id {get; set;}
     public string Expression {get; set;}
     public string Key {get; set;}

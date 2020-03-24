@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using jsonWebApiProject;
+using Newtonsoft.Json;
 
 namespace jsonWebApiProject.Controllers
 {
@@ -22,35 +23,43 @@ namespace jsonWebApiProject.Controllers
 
         // GET: api/StepperScema
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<StepperSchema>>> GetJsonSchema()
+        public async Task<ActionResult<IEnumerable<StepperSchemaFrontendMatch>>> GetJsonSchema()
         {
-            return await _context.JsonSchema
+            IEnumerable<StepperSchema> stepperSchemaList = await _context.JsonSchema
                 .Include(j => j.fieldGroup).ThenInclude(j => j.templateOptions)
                 .Include(j => j.fieldGroup).ThenInclude(j => j.fieldGroup).ThenInclude(j => j.templateOptions)
                 .Include(j => j.fieldGroup).ThenInclude(j => j.expressionProperties)
-                .Include(j => j.fieldGroup).ThenInclude(j => j.expressionProperties).ThenInclude(j => j.Model)
                 .ToListAsync();
+
+            var list = new List<StepperSchemaFrontendMatch>();
+
+            foreach(StepperSchema item in stepperSchemaList){
+                list.Add(TransformForFrontend(item));
+            }
+
+            return list;
         }
 
         // GET: api/StepperScema/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<StepperSchema>> GetStepperSchema(int id)
+        public async Task<ActionResult<StepperSchemaFrontendMatch>> GetStepperSchema(int id)
         {
             
             StepperSchema stepperSchema = await _context.JsonSchema
                 .Include(j => j.fieldGroup).ThenInclude(j => j.templateOptions)
                 .Include(j => j.fieldGroup).ThenInclude(j => j.fieldGroup).ThenInclude(j => j.templateOptions)
                 .Include(j => j.fieldGroup).ThenInclude(j => j.expressionProperties)
-                .Include(j => j.fieldGroup).ThenInclude(j => j.expressionProperties).ThenInclude(j => j.Model)
                 .SingleOrDefaultAsync(x => x.Id == id);
+            StepperSchemaFrontendMatch schema = TransformForFrontend(stepperSchema);
 
+            
 
             if (stepperSchema == null)
             {
                 return NotFound();
             }
 
-            return stepperSchema;
+            return schema;
         }
 
         // PUT: api/StepperScema/5
@@ -89,12 +98,14 @@ namespace jsonWebApiProject.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<StepperSchema>> PostStepperSchema(StepperSchema stepperSchema)
+        public async Task<ActionResult<StepperSchema>> PostStepperSchema(StepperSchemaFrontendMatch model)
         {
-            _context.JsonSchema.Add(stepperSchema);
+            StepperSchema schema = TransformForBackend(model);
+            
+            _context.JsonSchema.Add(schema);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetStepperSchema", new { id = stepperSchema.Id }, stepperSchema);
+            return CreatedAtAction("GetStepperSchema", new { id = schema.Id }, schema);
         }
 
         // DELETE: api/StepperScema/5
@@ -117,5 +128,63 @@ namespace jsonWebApiProject.Controllers
         {
             return _context.JsonSchema.Any(e => e.Id == id);
         }
+        
+        public StepperSchema TransformForBackend(StepperSchemaFrontendMatch model){
+            StepperSchema schema = new StepperSchema();
+            schema.type = model.type;
+            schema.fieldGroup = new List<QuestionGroup>();
+
+            foreach(QuestionGroupFrontendMatch data in model.fieldGroup){
+                
+                QuestionGroup questionGroup = new QuestionGroup();
+                questionGroup.fieldGroup = data.fieldGroup;
+                questionGroup.hideExpression = data.hideExpression;
+                questionGroup.templateOptions = data.templateOptions;
+                questionGroup.expressionProperties = new List<ExpressionModel>();
+
+                if(data.expressionProperties != null){
+
+                    foreach(var y in data.expressionProperties){
+                        ExpressionModel epressionModel = new ExpressionModel();
+                        epressionModel.Key = y.Key;
+                        epressionModel.Expression = y.Value;
+                        questionGroup.expressionProperties.Add(epressionModel);
+
+                    }
+
+                }
+                
+                schema.fieldGroup.Add(questionGroup);
+            }
+            return schema;
+        }
+
+        public StepperSchemaFrontendMatch TransformForFrontend(StepperSchema model){
+            StepperSchemaFrontendMatch schema = new StepperSchemaFrontendMatch();
+            schema.type = model.type;
+            schema.fieldGroup = new List<QuestionGroupFrontendMatch>();
+
+            foreach(QuestionGroup data in model.fieldGroup){
+                
+                QuestionGroupFrontendMatch questionGroup = new QuestionGroupFrontendMatch();
+                questionGroup.fieldGroup = data.fieldGroup;
+                questionGroup.hideExpression = data.hideExpression;
+                questionGroup.templateOptions = data.templateOptions;
+                questionGroup.expressionProperties = new Dictionary<string, string>();
+
+                if(data.expressionProperties.Count() != 0){
+
+                    foreach(var y in data.expressionProperties){
+                        questionGroup.expressionProperties.Add(y.Key,y.Expression);
+                    }
+
+                }
+                
+                schema.fieldGroup.Add(questionGroup);
+            }
+            return schema;
+        }
+
+
     }
 }

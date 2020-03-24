@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Newtonsoft.Json;
 
 namespace jsonWebApiProject
 {
@@ -13,9 +16,7 @@ namespace jsonWebApiProject
 
         public DbSet<StepperSchema> JsonSchema { get; set; }
         
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-      
-    }
+     
+        
     }
 }
