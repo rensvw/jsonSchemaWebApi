@@ -1,18 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 public class StepperSchema
 {
     public int Id { get; set;}
     public string type { get; set; }
     public List<QuestionGroup> fieldGroup { get; set; }
-
-    public static implicit operator StepperSchema(List<StepperSchema> v)
-    {
-        throw new NotImplementedException();
-    }
 }
 
 public class StepperSchemaFrontendMatch

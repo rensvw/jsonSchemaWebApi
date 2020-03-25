@@ -28,6 +28,7 @@ namespace jsonWebApiProject.Controllers
             IEnumerable<StepperSchema> stepperSchemaList = await _context.JsonSchema
                 .Include(j => j.fieldGroup).ThenInclude(j => j.templateOptions)
                 .Include(j => j.fieldGroup).ThenInclude(j => j.fieldGroup).ThenInclude(j => j.templateOptions)
+                .Include(j => j.fieldGroup).ThenInclude(j => j.fieldGroup).ThenInclude(j => j.templateOptions).ThenInclude(j => j.options)
                 .Include(j => j.fieldGroup).ThenInclude(j => j.expressionProperties)
                 .ToListAsync();
 
@@ -48,6 +49,7 @@ namespace jsonWebApiProject.Controllers
             StepperSchema stepperSchema = await _context.JsonSchema
                 .Include(j => j.fieldGroup).ThenInclude(j => j.templateOptions)
                 .Include(j => j.fieldGroup).ThenInclude(j => j.fieldGroup).ThenInclude(j => j.templateOptions)
+                .Include(j => j.fieldGroup).ThenInclude(j => j.fieldGroup).ThenInclude(j => j.templateOptions).ThenInclude(j => j.options)
                 .Include(j => j.fieldGroup).ThenInclude(j => j.expressionProperties)
                 .SingleOrDefaultAsync(x => x.Id == id);
             StepperSchemaFrontendMatch schema = TransformForFrontend(stepperSchema);
