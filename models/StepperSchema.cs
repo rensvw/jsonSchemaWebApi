@@ -1,18 +1,18 @@
 using System;
 using System.Collections.Generic;
 
-public class StepperSchema
+public class QuestionnaireStoreModel
 {
     public int Id { get; set;}
     public string type { get; set; }
     public List<QuestionGroup> fieldGroup { get; set; }
 }
 
-public class StepperSchemaFrontendMatch
+public class QuestionnaireViewModel
 {
     public int Id { get; set;}
     public string type { get; set; }
-    public List<QuestionGroupFrontendMatch> fieldGroup { get; set; }
+    public List<QuestionGroupViewModel> fieldGroup { get; set; }
 }
 
 public class QuestionGroup
@@ -24,7 +24,7 @@ public class QuestionGroup
     public List<ExpressionModel> expressionProperties { get; set; }
 }
 
-public class QuestionGroupFrontendMatch
+public class QuestionGroupViewModel
 {
     public int Id { get; set;}
     public QuestionGroupTemplate templateOptions { get; set; }
@@ -52,6 +52,7 @@ public class QuestionTemplate
     public int Id { get; set;}
     public string type { get; set; }
     public string label { get; set; }
+    public string Answer { get; set; }
     public List<OptionStepper> options { get; set; }
     public bool required { get; set; }
     public string placeholder { get; set; }

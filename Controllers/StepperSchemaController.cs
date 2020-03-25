@@ -23,19 +23,19 @@ namespace jsonWebApiProject.Controllers
 
         // GET: api/StepperScema
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<StepperSchemaFrontendMatch>>> GetJsonSchema()
+        public async Task<ActionResult<IEnumerable<QuestionnaireViewModel>>> GetJsonSchema()
         {
-            IEnumerable<StepperSchema> stepperSchemaList = await _context.JsonSchema
+            IEnumerable<QuestionnaireStoreModel> stepperSchemaList = await _context.JsonSchema
                 .Include(j => j.fieldGroup).ThenInclude(j => j.templateOptions)
                 .Include(j => j.fieldGroup).ThenInclude(j => j.fieldGroup).ThenInclude(j => j.templateOptions)
                 .Include(j => j.fieldGroup).ThenInclude(j => j.fieldGroup).ThenInclude(j => j.templateOptions).ThenInclude(j => j.options)
                 .Include(j => j.fieldGroup).ThenInclude(j => j.expressionProperties)
                 .ToListAsync();
 
-            var list = new List<StepperSchemaFrontendMatch>();
+            var list = new List<QuestionnaireViewModel>();
 
-            foreach(StepperSchema item in stepperSchemaList){
-                list.Add(TransformForFrontend(item));
+            foreach(QuestionnaireStoreModel item in stepperSchemaList){
+                list.Add(new QuestionnaireWrapper(item).GetViewModel());
             }
 
             return list;
@@ -43,16 +43,18 @@ namespace jsonWebApiProject.Controllers
 
         // GET: api/StepperScema/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<StepperSchemaFrontendMatch>> GetStepperSchema(int id)
+        public async Task<ActionResult<QuestionnaireViewModel>> GetStepperSchema(int id)
         {
             
-            StepperSchema stepperSchema = await _context.JsonSchema
+            QuestionnaireStoreModel stepperSchema = await _context.JsonSchema
                 .Include(j => j.fieldGroup).ThenInclude(j => j.templateOptions)
                 .Include(j => j.fieldGroup).ThenInclude(j => j.fieldGroup).ThenInclude(j => j.templateOptions)
                 .Include(j => j.fieldGroup).ThenInclude(j => j.fieldGroup).ThenInclude(j => j.templateOptions).ThenInclude(j => j.options)
                 .Include(j => j.fieldGroup).ThenInclude(j => j.expressionProperties)
                 .SingleOrDefaultAsync(x => x.Id == id);
-            StepperSchemaFrontendMatch schema = TransformForFrontend(stepperSchema);
+        
+            
+            QuestionnaireViewModel schema = new QuestionnaireWrapper(stepperSchema).GetViewModel();
 
             
 
@@ -68,7 +70,7 @@ namespace jsonWebApiProject.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutStepperSchema(int id, StepperSchema stepperSchema)
+        public async Task<IActionResult> PutStepperSchema(int id, QuestionnaireStoreModel stepperSchema)
         {
             if (id != stepperSchema.Id)
             {
@@ -100,9 +102,9 @@ namespace jsonWebApiProject.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<StepperSchema>> PostStepperSchema(StepperSchemaFrontendMatch model)
+        public async Task<ActionResult<QuestionnaireStoreModel>> PostStepperSchema(QuestionnaireViewModel model)
         {
-            StepperSchema schema = TransformForBackend(model);
+            QuestionnaireStoreModel schema = new QuestionnaireWrapper(model).GetStoreModel();
             
             _context.JsonSchema.Add(schema);
             await _context.SaveChangesAsync();
@@ -112,7 +114,7 @@ namespace jsonWebApiProject.Controllers
 
         // DELETE: api/StepperScema/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<StepperSchema>> DeleteStepperSchema(int id)
+        public async Task<ActionResult<QuestionnaireStoreModel>> DeleteStepperSchema(int id)
         {
             var stepperSchema = await _context.JsonSchema.FindAsync(id);
             if (stepperSchema == null)
@@ -130,63 +132,6 @@ namespace jsonWebApiProject.Controllers
         {
             return _context.JsonSchema.Any(e => e.Id == id);
         }
-        
-        public StepperSchema TransformForBackend(StepperSchemaFrontendMatch model){
-            StepperSchema schema = new StepperSchema();
-            schema.type = model.type;
-            schema.fieldGroup = new List<QuestionGroup>();
-
-            foreach(QuestionGroupFrontendMatch data in model.fieldGroup){
-                
-                QuestionGroup questionGroup = new QuestionGroup();
-                questionGroup.fieldGroup = data.fieldGroup;
-                questionGroup.hideExpression = data.hideExpression;
-                questionGroup.templateOptions = data.templateOptions;
-                questionGroup.expressionProperties = new List<ExpressionModel>();
-
-                if(data.expressionProperties != null){
-
-                    foreach(var y in data.expressionProperties){
-                        ExpressionModel epressionModel = new ExpressionModel();
-                        epressionModel.Key = y.Key;
-                        epressionModel.Expression = y.Value;
-                        questionGroup.expressionProperties.Add(epressionModel);
-
-                    }
-
-                }
-                
-                schema.fieldGroup.Add(questionGroup);
-            }
-            return schema;
-        }
-
-        public StepperSchemaFrontendMatch TransformForFrontend(StepperSchema model){
-            StepperSchemaFrontendMatch schema = new StepperSchemaFrontendMatch();
-            schema.type = model.type;
-            schema.fieldGroup = new List<QuestionGroupFrontendMatch>();
-
-            foreach(QuestionGroup data in model.fieldGroup){
-                
-                QuestionGroupFrontendMatch questionGroup = new QuestionGroupFrontendMatch();
-                questionGroup.fieldGroup = data.fieldGroup;
-                questionGroup.hideExpression = data.hideExpression;
-                questionGroup.templateOptions = data.templateOptions;
-                questionGroup.expressionProperties = new Dictionary<string, string>();
-
-                if(data.expressionProperties.Count() != 0){
-
-                    foreach(var y in data.expressionProperties){
-                        questionGroup.expressionProperties.Add(y.Key,y.Expression);
-                    }
-
-                }
-                
-                schema.fieldGroup.Add(questionGroup);
-            }
-            return schema;
-        }
-
 
     }
 }

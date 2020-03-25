@@ -14,7 +14,7 @@ namespace jsonWebApiProject
         {
         }
 
-        public DbSet<StepperSchema> JsonSchema { get; set; }
+        public DbSet<QuestionnaireStoreModel> JsonSchema { get; set; }
         
      
         
